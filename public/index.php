@@ -6,17 +6,18 @@ require_once __DIR__ . '/../app/config/Database.php';
 
 $pdo = Database::connect();
 $lang = current_lang();
+$page = $_GET['page'] ?? 'home';
 
 /**
  * About
  */
 $stmt = $pdo->prepare("SELECT content FROM about WHERE lang = ? LIMIT 1");
 $stmt->execute([$lang]);
-$about = $stmt->fetch();
+$about = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$about && $lang !== 'en') {
     $stmt->execute(['en']);
-    $about = $stmt->fetch();
+    $about = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -29,28 +30,28 @@ $stmt = $pdo->prepare("
     ORDER BY id ASC
 ");
 $stmt->execute([$lang]);
-$services = $stmt->fetchAll();
+$services = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (!$services && $lang !== 'en') {
     $stmt->execute(['en']);
-    $services = $stmt->fetchAll();
+    $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
  * Projects
  */
 $stmt = $pdo->prepare("
-    SELECT id, title, description, img_url, country, city, latitude, longitude
+    SELECT id, title, description, img_url, country, city, area, latitude, longitude
     FROM projects
     WHERE lang = ?
     ORDER BY id ASC
 ");
 $stmt->execute([$lang]);
-$projects = $stmt->fetchAll();
+$projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (!$projects && $lang !== 'en') {
     $stmt->execute(['en']);
-    $projects = $stmt->fetchAll();
+    $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -65,11 +66,11 @@ $stmt = $pdo->prepare("
     ORDER BY id ASC
 ");
 $stmt->execute([$lang]);
-$projectLocations = $stmt->fetchAll();
+$projectLocations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (!$projectLocations && $lang !== 'en') {
     $stmt->execute(['en']);
-    $projectLocations = $stmt->fetchAll();
+    $projectLocations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -83,11 +84,23 @@ $stmt = $pdo->prepare("
     ORDER BY id ASC
 ");
 $stmt->execute([$lang]);
-$offices = $stmt->fetchAll();
+$offices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (!$offices && $lang !== 'en') {
     $stmt->execute(['en']);
-    $offices = $stmt->fetchAll();
+    $offices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-require_once __DIR__ . '/../app/views/home.php';
+/**
+ * Simple page router
+ */
+switch ($page) {
+    case 'service-details':
+        require_once __DIR__ . '/../app/views/service-details.php';
+        break;
+
+    case 'home':
+    default:
+        require_once __DIR__ . '/../app/views/home.php';
+        break;
+}

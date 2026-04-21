@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e(site_text($pdo, 'site_title', $lang)) ?></title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link  rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
 </head>
 <body>
 
@@ -33,11 +36,21 @@
             </nav>
 
             <div class="nav-right">
-                <div class="lang-switch" aria-label="Language switcher">
-                    <a href="/?lang=ar"><?= e(site_text($pdo, 'lang_ar', $lang)) ?></a>
-                    <a href="/?lang=fr"><?= e(site_text($pdo, 'lang_fr', $lang)) ?></a>
-                    <a href="/?lang=en"><?= e(site_text($pdo, 'lang_en', $lang)) ?></a>
-                </div>
+<div class="lang-switch" aria-label="Language switcher">
+
+    <a href="/?lang=ar" class="lang-flag <?= $lang === 'ar' ? 'active' : '' ?>">
+        <img src="/assets/images/flags/lb.png" alt="Arabic">
+    </a>
+
+    <a href="/?lang=fr" class="lang-flag <?= $lang === 'fr' ? 'active' : '' ?>">
+        <img src="/assets/images/flags/fr.png" alt="Français">
+    </a>
+
+    <a href="/?lang=en" class="lang-flag <?= $lang === 'en' ? 'active' : '' ?>">
+        <img src="/assets/images/flags/gb.png" alt="English">
+    </a>
+
+</div>
 
                 <button
                     id="theme-toggle"
@@ -65,9 +78,17 @@
                 </nav>
 
                 <div class="mobile-lang-switch">
-                    <a href="/?lang=ar"><?= e(site_text($pdo, 'lang_ar', $lang)) ?></a>
-                    <a href="/?lang=fr"><?= e(site_text($pdo, 'lang_fr', $lang)) ?></a>
-                    <a href="/?lang=en"><?= e(site_text($pdo, 'lang_en', $lang)) ?></a>
+                    <a href="/?lang=ar" class="lang-flag <?= $lang === 'ar' ? 'active' : '' ?>">
+                        <img src="/assets/images/flags/lb.png" alt="Arabic">
+                    </a>
+
+                    <a href="/?lang=fr" class="lang-flag <?= $lang === 'fr' ? 'active' : '' ?>">
+                        <img src="/assets/images/flags/fr.png" alt="Français">
+                    </a>
+
+                    <a href="/?lang=en" class="lang-flag <?= $lang === 'en' ? 'active' : '' ?>">
+                        <img src="/assets/images/flags/gb.png" alt="English">
+    </a>
                 </div>
             </div>
         </div>
