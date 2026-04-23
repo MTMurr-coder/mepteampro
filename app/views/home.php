@@ -7,18 +7,35 @@
 
             <div class="hero-left">
 
-                <h1><?= e(site_text($pdo, 'hero_main_title', $lang)) ?></h1>
+                <?php
+                    // Split the long headline into a short punchy line + sector tagline.
+                    // Falls back gracefully if the DB key is not yet split.
+                    $heroShort  = site_text($pdo, 'hero_main_title_short', $lang);
+                    $heroSectors = site_text($pdo, 'hero_main_title_sectors', $lang);
+                    $heroFull   = site_text($pdo, 'hero_main_title', $lang);
+                ?>
+
+                <?php if ($heroShort): ?>
+                    <h1><?= e($heroShort) ?></h1>
+                    <?php if ($heroSectors): ?>
+                        <p class="hero-sectors"><?= e($heroSectors) ?></p>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <h1><?= e($heroFull) ?></h1>
+                <?php endif; ?>
 
                 <p class="hero-sub">
                     <?= e(site_text($pdo, 'hero_subtitle', $lang)) ?>
                 </p>
 
                 <div class="hero-actions">
+                    <!-- Primary CTA: solid orange fill -->
                     <a href="#services" class="btn-primary">
                         <?= e(site_text($pdo, 'hero_btn_primary', $lang)) ?>
                     </a>
 
-                    <a href="#projects" class="btn-secondary">
+                    <!-- Secondary CTA: ghost style (outline only, no white fill) -->
+                    <a href="#projects" class="btn-ghost">
                         <?= e(site_text($pdo, 'hero_btn_secondary', $lang)) ?>
                     </a>
                 </div>
@@ -49,144 +66,151 @@
 <section class="about-section section" id="about">
     <div class="container">
 
-        <h2 class="section-title">
-            <?= e(site_text($pdo, 'about_title', $lang)) ?>
-        </h2>
+        <!-- ── Section header ──────────────────────────────────── -->
+        <div class="about-header">
+            <h2 class="section-title">
+                <?= e(site_text($pdo, 'about_title', $lang)) ?>
+            </h2>
+            <?php $aboutIntro = site_text($pdo, 'about_intro', $lang); ?>
+            <?php if (!empty($aboutIntro)): ?>
+                <p class="section-lead">
+                    <?= e($aboutIntro) ?>
+                </p>
+            <?php endif; ?>
+        </div>
 
-        <?php $aboutIntro = site_text($pdo, 'about_intro', $lang); ?>
-        <?php if (!empty($aboutIntro)): ?>
-            <p class="section-lead">
-                <?= e($aboutIntro) ?>
-            </p>
-        <?php endif; ?>
-
+        <!-- ── Two-column layout ───────────────────────────────── -->
         <div class="about-shell">
 
-            <!-- LEFT -->
+            <!-- LEFT: image + vision/mission/aim cards -->
             <div class="about-left">
 
-                <div class="about-image-wrap">
+                <figure class="about-image-wrap">
                     <img src="assets/images/about.jpg"
                          alt="<?= e(site_text($pdo, 'about_title', $lang)) ?>">
-                </div>
+                    <?php $imgCaption = site_text($pdo, 'about_image_caption', $lang); ?>
+                    <?php if (!empty($imgCaption)): ?>
+                        <figcaption class="about-image-caption">
+                            <?= e($imgCaption) ?>
+                        </figcaption>
+                    <?php endif; ?>
+                </figure>
 
-                <div class="about-info-card">
-                    <h3><?= e(site_text($pdo, 'about_vision_title', $lang)) ?></h3>
-                    <p><?= e(site_text($pdo, 'about_vision_text', $lang)) ?></p>
-                </div>
-
-                <div class="about-info-card">
-                    <h3><?= e(site_text($pdo, 'about_mission_title', $lang)) ?></h3>
-                    <p><?= e(site_text($pdo, 'about_mission_text', $lang)) ?></p>
-                </div>
-
-                <div class="about-info-card">
-                    <h3><?= e(site_text($pdo, 'about_aim_title', $lang)) ?></h3>
-                    <p><?= e(site_text($pdo, 'about_aim_text', $lang)) ?></p>
-                </div>
-
-                <div class="about-summary">
-                    <p><?= e(site_text($pdo, 'about_highlight_text', $lang)) ?></p>
+                <!-- Vision / Mission / Aim — distinct bordered cards -->
+                <div class="about-vma-grid">
+                    <div class="about-vma-card">
+                        <span class="about-vma-icon"><i class="fa-solid fa-eye"></i></span>
+                        <div>
+                            <h3><?= e(site_text($pdo, 'about_vision_title', $lang)) ?></h3>
+                            <p><?= e(site_text($pdo, 'about_vision_text', $lang)) ?></p>
+                        </div>
+                    </div>
+                    <div class="about-vma-card">
+                        <span class="about-vma-icon"><i class="fa-solid fa-rocket"></i></span>
+                        <div>
+                            <h3><?= e(site_text($pdo, 'about_mission_title', $lang)) ?></h3>
+                            <p><?= e(site_text($pdo, 'about_mission_text', $lang)) ?></p>
+                        </div>
+                    </div>
+                    <div class="about-vma-card">
+                        <span class="about-vma-icon"><i class="fa-solid fa-bullseye"></i></span>
+                        <div>
+                            <h3><?= e(site_text($pdo, 'about_aim_title', $lang)) ?></h3>
+                            <p><?= e(site_text($pdo, 'about_aim_text', $lang)) ?></p>
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
-            <!-- RIGHT -->
+            <!-- RIGHT: core values grid -->
             <div class="about-right">
 
-                <h3 class="about-beliefs-title">
+                <h2 class="about-subsection-title">
                     <?= e(site_text($pdo, 'about_beliefs_title', $lang)) ?>
-                </h3>
+                </h2>
 
                 <div class="about-beliefs-grid">
-
                     <div class="about-belief-card">
-                        <div class="about-belief-icon">
-                            <i class="fa-solid fa-bolt"></i>
-                        </div>
+                        <div class="about-belief-icon"><i class="fa-solid fa-bolt"></i></div>
                         <h4><?= e(site_text($pdo, 'about_belief_1_title', $lang)) ?></h4>
                         <p><?= e(site_text($pdo, 'about_belief_1_text', $lang)) ?></p>
                     </div>
-
                     <div class="about-belief-card">
-                        <div class="about-belief-icon">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
+                        <div class="about-belief-icon"><i class="fa-solid fa-users"></i></div>
                         <h4><?= e(site_text($pdo, 'about_belief_2_title', $lang)) ?></h4>
                         <p><?= e(site_text($pdo, 'about_belief_2_text', $lang)) ?></p>
                     </div>
-
                     <div class="about-belief-card">
-                        <div class="about-belief-icon">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
+                        <div class="about-belief-icon"><i class="fa-solid fa-shield-halved"></i></div>
                         <h4><?= e(site_text($pdo, 'about_belief_3_title', $lang)) ?></h4>
                         <p><?= e(site_text($pdo, 'about_belief_3_text', $lang)) ?></p>
                     </div>
-
                     <div class="about-belief-card">
-                        <div class="about-belief-icon">
-                            <i class="fa-solid fa-circle-check"></i>
-                        </div>
+                        <div class="about-belief-icon"><i class="fa-solid fa-circle-check"></i></div>
                         <h4><?= e(site_text($pdo, 'about_belief_4_title', $lang)) ?></h4>
                         <p><?= e(site_text($pdo, 'about_belief_4_text', $lang)) ?></p>
                     </div>
-
                     <div class="about-belief-card">
-                        <div class="about-belief-icon">
-                            <i class="fa-solid fa-comments"></i>
-                        </div>
+                        <div class="about-belief-icon"><i class="fa-solid fa-comments"></i></div>
                         <h4><?= e(site_text($pdo, 'about_belief_5_title', $lang)) ?></h4>
                         <p><?= e(site_text($pdo, 'about_belief_5_text', $lang)) ?></p>
                     </div>
-
                     <div class="about-belief-card">
-                        <div class="about-belief-icon">
-                            <i class="fa-solid fa-bullseye"></i>
-                        </div>
+                        <div class="about-belief-icon"><i class="fa-solid fa-star"></i></div>
                         <h4><?= e(site_text($pdo, 'about_belief_6_title', $lang)) ?></h4>
                         <p><?= e(site_text($pdo, 'about_belief_6_text', $lang)) ?></p>
                     </div>
-
-                </div>
-
-                <div class="about-advantages">
-                    <h3><?= e(site_text($pdo, 'about_advantages_title', $lang)) ?></h3>
-                    <ul>
-                        <li><?= e(site_text($pdo, 'about_advantage_1', $lang)) ?></li>
-                        <li><?= e(site_text($pdo, 'about_advantage_2', $lang)) ?></li>
-                        <li><?= e(site_text($pdo, 'about_advantage_3', $lang)) ?></li>
-                        <li><?= e(site_text($pdo, 'about_advantage_4', $lang)) ?></li>
-                        <li><?= e(site_text($pdo, 'about_advantage_5', $lang)) ?></li>
-                        <li><?= e(site_text($pdo, 'about_advantage_6', $lang)) ?></li>
-                    </ul>
                 </div>
 
             </div>
 
         </div>
+
+        <!-- ── Why choose us — single instance, full width ─────── -->
+        <div class="about-advantages-wrap">
+            <h2 class="about-subsection-title">
+                <?= e(site_text($pdo, 'about_advantages_title', $lang)) ?>
+            </h2>
+            <ul class="about-advantages-list">
+                <li><?= e(site_text($pdo, 'about_advantage_1', $lang)) ?></li>
+                <li><?= e(site_text($pdo, 'about_advantage_2', $lang)) ?></li>
+                <li><?= e(site_text($pdo, 'about_advantage_3', $lang)) ?></li>
+                <li><?= e(site_text($pdo, 'about_advantage_4', $lang)) ?></li>
+                <li><?= e(site_text($pdo, 'about_advantage_5', $lang)) ?></li>
+                <li><?= e(site_text($pdo, 'about_advantage_6', $lang)) ?></li>
+            </ul>
+        </div>
+
+        <!-- ── Bottom CTA ──────────────────────────────────────── -->
+        <div class="about-cta">
+            <a href="#services" class="btn-primary">
+                <?= e(site_text($pdo, 'nav_services', $lang)) ?>
+            </a>
+            <a href="#contact" class="btn-ghost">
+                <?= e(site_text($pdo, 'contact_title', $lang)) ?>
+            </a>
+        </div>
+
     </div>
 </section>
- <section class="services-section section" id="services">
+<section class="services-section section" id="services">
     <div class="container">
 
-        <h2 class="section-title">
-            <?= e(site_text($pdo, 'services_title', $lang)) ?>
-        </h2>
+        <div class="services-header">
+            <h2 class="section-title">
+                <?= e(site_text($pdo, 'services_title', $lang)) ?>
+            </h2>
+            <?php $servicesIntro = site_text($pdo, 'services_intro', $lang); ?>
+            <?php if (!empty($servicesIntro)): ?>
+                <p class="section-lead"><?= e($servicesIntro) ?></p>
+            <?php endif; ?>
+        </div>
 
-        <?php $servicesIntro = site_text($pdo, 'services_intro', $lang); ?>
-        <?php if (!empty($servicesIntro)): ?>
-            <p class="section-lead">
-                <?= e($servicesIntro) ?>
-            </p>
-        <?php endif; ?>
+        <div class="services-grid">
 
-        <div class="services-grid services-grid-figma">
-
-            <article class="service-card service-card-mechanical">
-                <div class="service-icon">
-                    <i class="fa-solid fa-gear"></i>
-                </div>
+            <article class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-gear"></i></div>
                 <h3><?= e(site_text($pdo, 'service_1_title', $lang)) ?></h3>
                 <p class="service-desc"><?= e(site_text($pdo, 'service_1_desc', $lang)) ?></p>
                 <ul class="service-list">
@@ -200,10 +224,8 @@
                 </a>
             </article>
 
-            <article class="service-card service-card-hvac">
-                <div class="service-icon">
-                    <i class="fa-solid fa-wind"></i>
-                </div>
+            <article class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-wind"></i></div>
                 <h3><?= e(site_text($pdo, 'service_2_title', $lang)) ?></h3>
                 <p class="service-desc"><?= e(site_text($pdo, 'service_2_desc', $lang)) ?></p>
                 <ul class="service-list">
@@ -217,10 +239,8 @@
                 </a>
             </article>
 
-            <article class="service-card service-card-fire">
-                <div class="service-icon">
-                    <i class="fa-solid fa-fire-flame-simple"></i>
-                </div>
+            <article class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-fire-flame-simple"></i></div>
                 <h3><?= e(site_text($pdo, 'service_3_title', $lang)) ?></h3>
                 <p class="service-desc"><?= e(site_text($pdo, 'service_3_desc', $lang)) ?></p>
                 <ul class="service-list">
@@ -234,10 +254,8 @@
                 </a>
             </article>
 
-            <article class="service-card service-card-electrical">
-                <div class="service-icon">
-                    <i class="fa-solid fa-bolt"></i>
-                </div>
+            <article class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-bolt"></i></div>
                 <h3><?= e(site_text($pdo, 'service_4_title', $lang)) ?></h3>
                 <p class="service-desc"><?= e(site_text($pdo, 'service_4_desc', $lang)) ?></p>
                 <ul class="service-list">
@@ -251,10 +269,8 @@
                 </a>
             </article>
 
-            <article class="service-card service-card-plumbing">
-                <div class="service-icon">
-                    <i class="fa-solid fa-droplet"></i>
-                </div>
+            <article class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-droplet"></i></div>
                 <h3><?= e(site_text($pdo, 'service_5_title', $lang)) ?></h3>
                 <p class="service-desc"><?= e(site_text($pdo, 'service_5_desc', $lang)) ?></p>
                 <ul class="service-list">
@@ -268,10 +284,8 @@
                 </a>
             </article>
 
-            <article class="service-card service-card-elv">
-                <div class="service-icon">
-                    <i class="fa-solid fa-camera"></i>
-                </div>
+            <article class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-camera"></i></div>
                 <h3><?= e(site_text($pdo, 'service_6_title', $lang)) ?></h3>
                 <p class="service-desc"><?= e(site_text($pdo, 'service_6_desc', $lang)) ?></p>
                 <ul class="service-list">
@@ -285,10 +299,8 @@
                 </a>
             </article>
 
-            <article class="service-card service-card-water">
-                <div class="service-icon">
-                    <i class="fa-solid fa-water"></i>
-                </div>
+            <article class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-water"></i></div>
                 <h3><?= e(site_text($pdo, 'service_7_title', $lang)) ?></h3>
                 <p class="service-desc"><?= e(site_text($pdo, 'service_7_desc', $lang)) ?></p>
                 <ul class="service-list">
@@ -303,6 +315,14 @@
             </article>
 
         </div>
+
+        <p class="services-footer-cta">
+            <?= e(site_text($pdo, 'services_cta_question', $lang) ?: ($lang === 'fr' ? 'Vous ne savez pas quel service correspond à votre projet ?' : ($lang === 'ar' ? 'لست متأكداً من الخدمة المناسبة لمشروعك؟' : 'Not sure which service fits your project?'))) ?>
+            <a href="#contact" class="services-cta-link">
+                <?= e(site_text($pdo, 'services_cta_link', $lang) ?: ($lang === 'fr' ? 'Parlez à notre équipe →' : ($lang === 'ar' ? 'تحدث مع فريقنا ←' : 'Talk to our team →'))) ?>
+            </a>
+        </p>
+
     </div>
 </section>
 
@@ -313,7 +333,6 @@
             <h2 class="section-title">
                 <?= e(site_text($pdo, 'projects_title', $lang)) ?>
             </h2>
-
             <p class="section-lead">
                 <?= e(site_text($pdo, 'projects_intro', $lang)) ?>
             </p>
@@ -329,15 +348,15 @@
             }
         }
         ksort($countries);
+        $totalProjects = count($projects);
     ?>
 
+    <!-- Country filter tabs -->
     <div class="projects-filter-wrap">
-        <!-- Desktop tabs -->
         <div class="projects-country-tabs" id="projectCountryTabs">
             <button type="button" class="project-country-tab active" data-country="all">
                 <?= e(site_text($pdo, 'projects_filter_all', $lang)) ?>
             </button>
-
             <?php foreach ($countries as $country): ?>
                 <button type="button" class="project-country-tab" data-country="<?= e($country) ?>">
                     <?= e($country) ?>
@@ -345,18 +364,15 @@
             <?php endforeach; ?>
         </div>
 
-        <!-- Mobile dropdown -->
         <div class="projects-mobile-filter" id="projectsMobileFilter">
             <button type="button" class="projects-mobile-filter-toggle" id="projectsMobileFilterToggle">
                 <i class="fas fa-bars"></i>
                 <span><?= e(site_text($pdo, 'projects_filter_label', $lang)) ?></span>
             </button>
-
             <div class="projects-mobile-filter-menu" id="projectsMobileFilterMenu">
                 <button type="button" class="projects-mobile-filter-item active" data-country="all">
                     <?= e(site_text($pdo, 'projects_filter_all', $lang)) ?>
                 </button>
-
                 <?php foreach ($countries as $country): ?>
                     <button type="button" class="projects-mobile-filter-item" data-country="<?= e($country) ?>">
                         <?= e($country) ?>
@@ -366,29 +382,61 @@
         </div>
     </div>
 
-    <div class="portfolio-slider" id="portfolioSlider">
+    <!-- Slider -->
+    <div class="portfolio-slider" id="portfolioSlider" tabindex="0" aria-label="Project portfolio slider">
         <?php foreach ($projects as $index => $project): ?>
             <?php
-                $country = trim((string)($project['country'] ?? ''));
+                $country      = trim((string)($project['country'] ?? ''));
+                $city         = trim((string)($project['city'] ?? ''));
                 $locationLabel = trim(
-                    ($project['city'] ?? '') .
-                    (!empty($project['city']) && !empty($project['country']) ? ', ' : '') .
-                    ($project['country'] ?? '')
+                    $city .
+                    (!empty($city) && !empty($country) ? ', ' : '') .
+                    $country
                 );
+                $area = trim((string)($project['area'] ?? ''));
             ?>
             <div
                 class="portfolio-slide <?= $index === 0 ? 'active' : '' ?>"
                 data-country="<?= e($country) ?>"
+                role="group"
+                aria-label="Project <?= $index + 1 ?> of <?= $totalProjects ?>"
             >
+                <!-- Image panel -->
                 <div class="portfolio-image">
-                    <img src="<?= e($project['img_url']) ?>" alt="<?= e($project['title']) ?>">
+                    <img
+                        src="<?= e($project['img_url']) ?>"
+                        alt="<?= e($project['title']) ?>"
+                        loading="<?= $index === 0 ? 'eager' : 'lazy' ?>"
+                    >
+                    <!-- Slide progress bar -->
+                    <div class="portfolio-progress-bar">
+                        <div class="portfolio-progress-fill"></div>
+                    </div>
                 </div>
 
+                <!-- Content panel -->
                 <div class="portfolio-content">
+
+                    <!-- Counter -->
                     <div class="portfolio-count">
-                        <span class="portfolioCurrent">1</span>
-                        <span class="portfolio-count-separator">/</span>
-                        <span class="portfolioTotal"><?= count($projects) ?></span>
+                        <span class="portfolioCurrent"><?= $index + 1 ?></span>
+                        <span class="portfolio-count-separator"> / </span>
+                        <span class="portfolioTotal"><?= $totalProjects ?></span>
+                    </div>
+
+                    <!-- Badges row: sector + area -->
+                    <div class="portfolio-badges">
+                        <?php if (!empty($project['sector'])): ?>
+                            <span class="portfolio-badge portfolio-badge-sector">
+                                <?= e($project['sector']) ?>
+                            </span>
+                        <?php endif; ?>
+                        <?php if (!empty($area)): ?>
+                            <span class="portfolio-badge portfolio-badge-area">
+                                <i class="fas fa-ruler-combined"></i>
+                                <?= e($area) ?>
+                            </span>
+                        <?php endif; ?>
                     </div>
 
                     <h3><?= e($project['title']) ?></h3>
@@ -397,19 +445,22 @@
                         <?= e($project['description']) ?>
                     </p>
 
-                    <?php if (!empty($project['area'])): ?>
-                        <div class="portfolio-meta">
-                            <strong><?= e(site_text($pdo, 'projects_area_label', $lang)) ?>:</strong>
-                            <span><?= e($project['area']) ?></span>
-                        </div>
-                    <?php endif; ?>
-
+                    <!-- Location -->
                     <?php if ($locationLabel !== ''): ?>
                         <div class="portfolio-location">
                             <i class="fas fa-location-dot"></i>
                             <span><?= e($locationLabel) ?></span>
                         </div>
                     <?php endif; ?>
+
+                    <!-- Per-slide CTA -->
+                    <a href="#contact" class="portfolio-slide-cta">
+                        <?= e(site_text($pdo, 'projects_discuss_cta', $lang)
+                            ?: ($lang === 'fr' ? 'Discuter de votre projet →'
+                                : ($lang === 'ar' ? 'ناقش مشروعك ←'
+                                    : 'Discuss your project →'))) ?>
+                    </a>
+
                 </div>
             </div>
         <?php endforeach; ?>
@@ -421,27 +472,75 @@
             <i class="fas fa-chevron-right"></i>
         </button>
     </div>
+
+    <!-- Section-level CTA below slider -->
+    <div class="portfolio-section-cta">
+        <p><?= e(site_text($pdo, 'projects_section_cta_text', $lang)
+            ?: ($lang === 'fr' ? 'Vous avez un projet similaire en tête ?'
+                : ($lang === 'ar' ? 'هل لديك مشروع مماثل؟'
+                    : 'Have a similar project in mind?'))) ?>
+        </p>
+        <a href="#contact" class="btn-primary">
+            <?= e(site_text($pdo, 'projects_section_cta_btn', $lang)
+                ?: ($lang === 'fr' ? 'Contactez-nous'
+                    : ($lang === 'ar' ? 'تواصل معنا'
+                        : 'Get in touch'))) ?>
+        </a>
+    </div>
+
 <?php endif; ?>
     </div>
 </section>
-<section class="map-showcase section" id="locations">
+<section class="map-showcase map-showcase-premium" id="presence">
     <div class="container">
-        <div class="projects-heading">
-            <h2 class="section-title">
-                <?= e(site_text($pdo, 'map_title', $lang)) ?>
-            </h2>
-
+        <div class="map-showcase-header">
+            <span class="section-kicker">Global Footprint</span>
+            <h2 class="section-title">Our Presence</h2>
             <p class="section-lead">
-                <?= e(site_text($pdo, 'map_intro', $lang)) ?>
+                Discover our offices and selected project locations across the regions where we operate.
             </p>
         </div>
 
-        <div class="map-card">
-            <div id="projects-map"></div>
+        <div class="presence-stats">
+            <div class="presence-stat">
+                <strong>2</strong>
+                <span>Office Locations</span>
+            </div>
+            <div class="presence-stat">
+                <strong>8+</strong>
+                <span>Countries Reached</span>
+            </div>
+            <div class="presence-stat">
+                <strong>MEP</strong>
+                <span>Design & Coordination</span>
+            </div>
+        </div>
+
+        <div class="presence-legend">
+            <span class="presence-legend-item">
+                <span class="presence-dot presence-dot-office"></span>
+                Offices
+            </span>
+            <span class="presence-legend-item">
+                <span class="presence-dot presence-dot-project"></span>
+                Projects
+            </span>
+        </div>
+
+        <div class="map-card map-card-premium">
+            <div class="map-card-top">
+                <div>
+                    <h3>Offices & Project Locations</h3>
+                    <p>Selected locations across residential, industrial, healthcare, and technically demanding sectors.</p>
+                </div>
+            </div>
+
+            <div class="map-frame">
+                <div id="projects-map"></div>
+            </div>
         </div>
     </div>
 </section>
-
 <section class="contact-section section" id="contact">
     <div class="container">
 
@@ -540,6 +639,8 @@
 
                 <form class="contact-form" action="/contact-submit.php" method="POST">
                     <input type="hidden" name="lang" value="<?= e($lang) ?>">
+                    <input type="hidden" name="csrf_token" value="<?= e($csrfToken) ?>">
+                    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
 
                     <div class="form-group">
                         <label for="contact_name"><?= e(site_text($pdo, 'contact_name_label', $lang)) ?></label>

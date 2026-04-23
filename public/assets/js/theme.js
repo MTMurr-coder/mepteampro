@@ -6,12 +6,34 @@
     const mobilePanel = document.getElementById("mobile-panel");
 
     function applyTheme(theme) {
-        if (theme === "dark") {
-            body.classList.add("dark");
-            if (themeToggle) themeToggle.textContent = "☀";
-        } else {
-            body.classList.remove("dark");
-            if (themeToggle) themeToggle.textContent = "🌙";
+        const isDark = theme === "dark";
+        body.classList.toggle("dark", isDark);
+
+        if (themeToggle) {
+            const iconEl  = themeToggle.querySelector(".theme-toggle-icon");
+            const labelEl = themeToggle.querySelector(".theme-toggle-label");
+            const lang    = document.documentElement.lang || "en";
+
+            if (iconEl) {
+                // Update only the icon span — never overwrite the whole button
+                iconEl.textContent = isDark ? "☀" : "🌙";
+            } else {
+                // Fallback: no span structure, safe to set textContent directly
+                themeToggle.textContent = isDark ? "☀" : "🌙";
+            }
+
+            if (labelEl) {
+                if (isDark) {
+                    labelEl.textContent = lang === "fr" ? "Clair" : (lang === "ar" ? "فاتح" : "Light");
+                } else {
+                    labelEl.textContent = lang === "fr" ? "Sombre" : (lang === "ar" ? "داكن" : "Dark");
+                }
+            }
+
+            themeToggle.setAttribute(
+                "aria-label",
+                isDark ? "Switch to light mode" : "Switch to dark mode"
+            );
         }
     }
 
@@ -27,11 +49,7 @@
     }
 
     window.addEventListener("scroll", function () {
-        if (window.scrollY > 50) {
-            document.body.classList.add("scrolled");
-        } else {
-            document.body.classList.remove("scrolled");
-        }
+        body.classList.toggle("scrolled", window.scrollY > 50);
     });
 
     if (menuToggle && mobilePanel) {
