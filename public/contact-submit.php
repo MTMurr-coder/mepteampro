@@ -1,139 +1,107 @@
-/* ============================================================
-   Contact form validation and UX improvements
-   Add to /assets/js/contact-form.js (new file)
-   ============================================================ */
+<?php
+declare(strict_types=1);
 
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector(".contact-form");
-    if (!form) return;
+require_once __DIR__ . '/../app/helpers/functions.php';
+require_once __DIR__ . '/../app/config/Database.php';
 
-    const nameInput = form.querySelector('input[name="name"]');
-    const emailInput = form.querySelector('input[name="email"]');
-    const messageInput = form.querySelector('textarea[name="message"]');
-    const submitBtn = form.querySelector('button[type="submit"]');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-    // Track validation state
-    const isValid = {
-        name: false,
-        email: false,
-        message: false
-    };
+/* ── Only accept POST ───────────────────────────────────────────────── */
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: /?contact=error');
+    exit;
+}
 
-    // Validation rules
-    const validators = {
-        name: (value) => {
-            const trimmed = value.trim();
-            if (trimmed.length < 2) return "Name must be at least 2 characters";
-            if (trimmed.length > 100) return "Name must be less than 100 characters";
-            return null;
-        },
-        email: (value) => {
-            const trimmed = value.trim();
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(trimmed)) return "Please enter a valid email address";
-            return null;
-        },
-        message: (value) => {
-            const trimmed = value.trim();
-            if (trimmed.length < 10) return "Message must be at least 10 characters";
-            if (trimmed.length > 5000) return "Message must be less than 5000 characters";
-            return null;
-        }
-    };
+/* ── Language validation ─────────────────────────────────────────────── */
+$lang = $_POST['lang'] ?? 'en';
+$allowedLangs = ['en', 'fr', 'ar'];
+if (!in_array($lang, $allowedLangs, true)) {
+    $lang = 'en';
+}
 
-    // Set validation state and show/hide error
-    const setValidation = (field, inputElement, isFieldValid, errorMessage) => {
-        isValid[field] = isFieldValid;
-        const formGroup = inputElement.closest(".form-group");
-        const errorEl = formGroup.querySelector(".form-error") || createErrorElement(formGroup);
+$redirect = static function (string $status) use ($lang): never {
+    header('Location: /?lang=' . urlencode($lang) . '&contact=' . $status . '#contact');
+    exit;
+};
 
-        if (isFieldValid) {
-            formGroup.classList.remove("error");
-            formGroup.classList.add("valid");
-            errorEl.textContent = "";
-        } else {
-            formGroup.classList.remove("valid");
-            formGroup.classList.add("error");
-            errorEl.textContent = errorMessage || "This field is invalid";
-        }
+/* ── CSRF verification ───────────────────────────────────────────────── */
+$submittedToken = $_POST['csrf_token'] ?? '';
+$sessionToken   = $_SESSION['csrf_token'] ?? '';
 
-        updateSubmitButton();
-    };
+if (
+    $sessionToken === ''
+    || !hash_equals($sessionToken, $submittedToken)
+) {
+    $redirect('error');
+}
 
-    // Create error message element if it doesn't exist
-    const createErrorElement = (formGroup) => {
-        const errorEl = document.createElement("div");
-        errorEl.className = "form-error";
-        formGroup.appendChild(errorEl);
-        return errorEl;
-    };
+// Rotate token after use so each submission needs a fresh one
+unset($_SESSION['csrf_token']);
 
-    // Update submit button state
-    const updateSubmitButton = () => {
-        const allValid = isValid.name && isValid.email && isValid.message;
-        submitBtn.disabled = !allValid;
-    };
+/* ── Rate limiting (max 3 submissions per 10 minutes per IP) ─────────── */
+$ip          = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+$rateLimitKey = 'contact_rate_' . md5($ip);
+$rateData     = $_SESSION[$rateLimitKey] ?? ['count' => 0, 'window_start' => time()];
 
-    // Real-time validation on input
-    nameInput?.addEventListener("input", (e) => {
-        const error = validators.name(e.target.value);
-        setValidation("name", nameInput, !error, error);
-    });
+$windowSeconds = 600; // 10 minutes
+$maxSubmissions = 3;
 
-    emailInput?.addEventListener("input", (e) => {
-        const error = validators.email(e.target.value);
-        setValidation("email", emailInput, !error, error);
-    });
+if ((time() - $rateData['window_start']) > $windowSeconds) {
+    // Reset window
+    $rateData = ['count' => 0, 'window_start' => time()];
+}
 
-    messageInput?.addEventListener("input", (e) => {
-        const error = validators.message(e.target.value);
-        setValidation("message", messageInput, !error, error);
-    });
+if ($rateData['count'] >= $maxSubmissions) {
+    $redirect('error');
+}
 
-    // Blur validation (more aggressive feedback on unfocus)
-    [nameInput, emailInput, messageInput].forEach((input) => {
-        input?.addEventListener("blur", (e) => {
-            const fieldName = e.target.name;
-            if (fieldName === "name") {
-                const error = validators.name(e.target.value);
-                setValidation("name", nameInput, !error, error);
-            } else if (fieldName === "email") {
-                const error = validators.email(e.target.value);
-                setValidation("email", emailInput, !error, error);
-            } else if (fieldName === "message") {
-                const error = validators.message(e.target.value);
-                setValidation("message", messageInput, !error, error);
-            }
-        });
-    });
+/* ── Input validation ────────────────────────────────────────────────── */
+$name    = trim((string)($_POST['name']    ?? ''));
+$email   = trim((string)($_POST['email']   ?? ''));
+$message = trim((string)($_POST['message'] ?? ''));
 
-    // Form submission with loading state
-    form.addEventListener("submit", (e) => {
-        // Browser will prevent submission if any input is invalid
-        if (nameInput.validity.valid && emailInput.validity.valid && messageInput.validity.valid) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Sending...";
-            // Form submits normally; PHP handles it
-        } else {
-            e.preventDefault();
-            // Trigger validation on all fields
-            [nameInput, emailInput, messageInput].forEach((input) => {
-                input.dispatchEvent(new Event("blur"));
-            });
-        }
-    });
+// Honeypot: a hidden field bots fill but humans leave empty
+$honeypot = $_POST['website'] ?? '';
+if ($honeypot !== '') {
+    // Silently succeed to avoid giving bots feedback
+    $redirect('success');
+}
 
-    // Initialize — check if fields already have values (e.g., after validation error redirect)
-    if (nameInput?.value) {
-        const error = validators.name(nameInput.value);
-        setValidation("name", nameInput, !error, error);
-    }
-    if (emailInput?.value) {
-        const error = validators.email(emailInput.value);
-        setValidation("email", emailInput, !error, error);
-    }
-    if (messageInput?.value) {
-        const error = validators.message(messageInput.value);
-        setValidation("message", messageInput, !error, error);
-    }
-});
+if ($name === '' || $email === '' || $message === '') {
+    $redirect('error');
+}
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $redirect('error');
+}
+
+// Length limits
+if (mb_strlen($name) > 150) {
+    $redirect('error');
+}
+if (mb_strlen($message) > 5000) {
+    $redirect('error');
+}
+
+/* ── Persist to DB ───────────────────────────────────────────────────── */
+try {
+    $pdo = Database::connect();
+
+    $stmt = $pdo->prepare("
+        INSERT INTO contact_messages (name, email, message, lang, created_at)
+        VALUES (?, ?, ?, ?, NOW())
+    ");
+    $stmt->execute([$name, $email, $message, $lang]);
+
+    // Increment rate-limit counter only on success
+    $rateData['count']++;
+    $_SESSION[$rateLimitKey] = $rateData;
+
+    $redirect('success');
+
+} catch (Throwable $e) {
+    error_log('[MEPTeam] contact-submit DB error: ' . $e->getMessage());
+    $redirect('error');
+}
