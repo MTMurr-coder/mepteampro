@@ -1,0 +1,379 @@
+/* =========================================================
+   MEPTeam Pro — RTL rescue patch
+   Use this AFTER your existing /assets/css/style.css
+   This patch fixes RTL layout without changing the full design.
+   ========================================================= */
+
+html[dir="rtl"],
+html[dir="rtl"] body {
+    direction: rtl;
+}
+
+html[dir="rtl"] body {
+    text-align: right;
+}
+
+/* Global logical alignment */
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .section-lead,
+html[dir="rtl"] .section-text,
+html[dir="rtl"] .section-kicker,
+html[dir="rtl"] .services-header,
+html[dir="rtl"] .projects-heading,
+html[dir="rtl"] .contact-header,
+html[dir="rtl"] .map-showcase-header,
+html[dir="rtl"] .about-header,
+html[dir="rtl"] .about-right,
+html[dir="rtl"] .about-left,
+html[dir="rtl"] .service-detail-main,
+html[dir="rtl"] .service-detail-sidebar,
+html[dir="rtl"] .portfolio-content,
+html[dir="rtl"] .contact-form-wrap,
+html[dir="rtl"] .contact-info-card,
+html[dir="rtl"] .footer-col,
+html[dir="rtl"] .map-card-top,
+html[dir="rtl"] .service-content-card,
+html[dir="rtl"] .service-side-card,
+html[dir="rtl"] .service-hero-content,
+html[dir="rtl"] .service-hero-card {
+    text-align: right;
+}
+
+/* Keep intentionally centered headings centered */
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .section-lead,
+html[dir="rtl"] .services-header,
+html[dir="rtl"] .projects-heading,
+html[dir="rtl"] .contact-header,
+html[dir="rtl"] .map-showcase-header,
+html[dir="rtl"] .about-header {
+    margin-inline-left: auto;
+    margin-inline-right: auto;
+}
+
+/* Header / nav */
+html[dir="rtl"] .top-nav {
+    direction: rtl;
+}
+
+html[dir="rtl"] .main-nav,
+html[dir="rtl"] .nav-right,
+html[dir="rtl"] .lang-switch,
+html[dir="rtl"] .mobile-lang-switch,
+html[dir="rtl"] .mobile-nav {
+    direction: rtl;
+}
+
+html[dir="rtl"] .main-nav {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .nav-right {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .mobile-panel {
+    text-align: right;
+}
+
+/* Hero */
+html[dir="rtl"] .hero-inner,
+html[dir="rtl"] .hero-left {
+    text-align: right;
+}
+
+html[dir="rtl"] .hero-actions,
+html[dir="rtl"] .hero-stats {
+    justify-content: flex-end;
+}
+
+html[dir="rtl"] .hero-actions {
+    flex-direction: row-reverse;
+}
+
+/* About */
+html[dir="rtl"] .about-shell,
+html[dir="rtl"] .about-premium-grid,
+html[dir="rtl"] .about-grid,
+html[dir="rtl"] .contact-grid,
+html[dir="rtl"] .service-detail-layout,
+html[dir="rtl"] .service-hero-grid {
+    direction: rtl;
+}
+
+html[dir="rtl"] .about-vma-card,
+html[dir="rtl"] .about-panel,
+html[dir="rtl"] .about-belief-card,
+html[dir="rtl"] .about-belief-card-premium,
+html[dir="rtl"] .about-story-copy,
+html[dir="rtl"] .about-summary,
+html[dir="rtl"] .about-info-card,
+html[dir="rtl"] .about-advantages,
+html[dir="rtl"] .about-advantages-wrap,
+html[dir="rtl"] .about-advantages-premium {
+    text-align: right;
+}
+
+html[dir="rtl"] .about-vma-card,
+html[dir="rtl"] .about-panel,
+html[dir="rtl"] .contact-info-card {
+    direction: rtl;
+}
+
+html[dir="rtl"] .about-vma-card,
+html[dir="rtl"] .contact-info-card {
+    grid-auto-flow: dense;
+}
+
+html[dir="rtl"] .about-vma-card {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .about-panel {
+    grid-template-columns: 1fr 56px;
+}
+
+html[dir="rtl"] .about-advantages li,
+html[dir="rtl"] .about-advantages-premium li,
+html[dir="rtl"] .service-feature-list li,
+html[dir="rtl"] .service-list li {
+    padding-inline-start: 0 !important;
+}
+
+html[dir="rtl"] .about-advantages li,
+html[dir="rtl"] .about-advantages-premium li {
+    padding-inline-end: 28px !important;
+}
+
+html[dir="rtl"] .service-feature-list li {
+    padding-inline-end: 26px !important;
+}
+
+html[dir="rtl"] .service-list li {
+    padding-inline-end: 14px !important;
+}
+
+html[dir="rtl"] .about-advantages li::before,
+html[dir="rtl"] .about-advantages-premium li::before,
+html[dir="rtl"] .service-feature-list li::before,
+html[dir="rtl"] .service-list li::before {
+    inset-inline-start: auto !important;
+    inset-inline-end: 0 !important;
+}
+
+/* Services */
+html[dir="rtl"] .service-link {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .service-link:hover {
+    transform: translateX(-2px);
+}
+
+/* Service detail */
+html[dir="rtl"] .service-breadcrumb {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+}
+
+html[dir="rtl"] .service-detail-actions {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+}
+
+html[dir="rtl"] .service-side-links a {
+    text-align: right;
+}
+
+/* Projects filter */
+html[dir="rtl"] .projects-filter-wrap,
+html[dir="rtl"] .projects-country-tabs,
+html[dir="rtl"] .projects-mobile-filter,
+html[dir="rtl"] .projects-mobile-filter-menu,
+html[dir="rtl"] .projects-mobile-filter-toggle {
+    direction: rtl;
+}
+
+html[dir="rtl"] .projects-country-tabs {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .project-country-tab {
+    border-right: 0;
+    border-left: 1px solid var(--border);
+}
+
+html[dir="rtl"] .project-country-tab:last-child {
+    border-left: 0;
+}
+
+html[dir="rtl"] .projects-mobile-filter-item {
+    text-align: right;
+}
+
+/* Portfolio slider */
+html[dir="rtl"] .portfolio-slide {
+    direction: rtl;
+}
+
+html[dir="rtl"] .portfolio-content,
+html[dir="rtl"] .portfolio-desc,
+html[dir="rtl"] .portfolio-location,
+html[dir="rtl"] .portfolio-meta,
+html[dir="rtl"] .portfolio-badges,
+html[dir="rtl"] .portfolio-count {
+    text-align: right;
+}
+
+html[dir="rtl"] .portfolio-location,
+html[dir="rtl"] .portfolio-badges,
+html[dir="rtl"] .portfolio-count,
+html[dir="rtl"] .portfolio-slide-cta {
+    justify-content: flex-start;
+}
+
+html[dir="rtl"] .portfolio-nav.prev {
+    right: -24px;
+    left: auto;
+}
+
+html[dir="rtl"] .portfolio-nav.next {
+    left: -24px;
+    right: auto;
+}
+
+html[dir="rtl"] .portfolio-nav i {
+    transform: rotate(180deg);
+}
+
+/* Map */
+html[dir="rtl"] .presence-legend,
+html[dir="rtl"] .presence-stats,
+html[dir="rtl"] .map-popup,
+html[dir="rtl"] .leaflet-popup-content {
+    text-align: right;
+}
+
+html[dir="rtl"] .presence-legend-item {
+    flex-direction: row-reverse;
+}
+
+/* Contact */
+html[dir="rtl"] .contact-grid {
+    direction: rtl;
+}
+
+html[dir="rtl"] .contact-info-card {
+    grid-template-columns: 1fr 44px;
+}
+
+html[dir="rtl"] .contact-form,
+html[dir="rtl"] .form-group,
+html[dir="rtl"] .contact-office-list,
+html[dir="rtl"] .contact-office-item {
+    text-align: right;
+}
+
+html[dir="rtl"] .form-group input,
+html[dir="rtl"] .form-group textarea {
+    text-align: right;
+}
+
+/* Footer */
+html[dir="rtl"] .footer-top,
+html[dir="rtl"] .footer-bottom {
+    direction: rtl;
+}
+
+html[dir="rtl"] .footer-col {
+    align-items: flex-end;
+}
+
+html[dir="rtl"] .footer-contact-item,
+html[dir="rtl"] .footer-socials,
+html[dir="rtl"] .footer-badges,
+html[dir="rtl"] .footer-bottom-links {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .footer-links a:hover {
+    transform: translateX(-2px);
+}
+
+/* Mobile RTL safety */
+@media (max-width: 992px) {
+    html[dir="rtl"] .main-nav,
+    html[dir="rtl"] .nav-right .lang-switch {
+        display: none;
+    }
+}
+
+@media (max-width: 900px) {
+    html[dir="rtl"] .portfolio-nav.prev {
+        right: calc(50% - 56px);
+        left: auto;
+    }
+
+    html[dir="rtl"] .portfolio-nav.next {
+        left: calc(50% - 56px);
+        right: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    html[dir="rtl"] .hero-actions,
+    html[dir="rtl"] .service-detail-actions,
+    html[dir="rtl"] .about-cta {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 640px) {
+    html[dir="rtl"] .contact-info-card {
+        grid-template-columns: 1fr 40px;
+    }
+
+    html[dir="rtl"] .about-panel {
+        grid-template-columns: 1fr;
+    }
+
+    html[dir="rtl"] .hero-actions,
+    html[dir="rtl"] .hero-stats {
+        align-items: flex-end;
+        justify-content: flex-start;
+    }
+
+    html[dir="rtl"] .projects-mobile-filter-toggle {
+        justify-content: space-between;
+    }
+
+    html[dir="rtl"] .footer-bottom {
+        align-items: flex-end;
+    }
+}
+/* ===== FIX SECTION TITLES CENTERING ===== */
+
+.section-title,
+.section h2,
+.section-placeholder h2 {
+    text-align: center !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Ensure wrapper doesn’t override it */
+.section-header,
+.services-header,
+.projects-heading,
+.about-header,
+.contact-info {
+    text-align: center !important;
+}
+
+/* RTL should NOT change title alignment */
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .section h2,
+html[dir="rtl"] .section-placeholder h2 {
+    text-align: center !important;
+}

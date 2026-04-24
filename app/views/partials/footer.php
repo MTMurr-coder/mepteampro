@@ -111,14 +111,33 @@
     </div>
 </footer>
 
+<?php
+$normalizedProjectLocations = array_map(
+    static fn($project) => localized_project((array) $project, $lang),
+    $projectLocations ?? []
+);
+$normalizedOffices = array_map(
+    static fn($office) => localized_office((array) $office, $lang),
+    $offices ?? []
+);
+?>
 <script>
-    window.projectLocations = <?= json_encode($projectLocations ?? [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
-    window.offices = <?= json_encode($offices ?? [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+    window.projectLocations = <?= json_encode($normalizedProjectLocations, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+    window.offices = <?= json_encode($normalizedOffices, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+    window.mapTranslations = <?= json_encode(map_translations($pdo, $lang), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
 </script>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="/assets/js/theme.js"></script>
 <script src="/assets/js/map.js"></script>
 <script src="/assets/js/slider.js"></script>
+<script src="/assets/js/contact-form.js"></script>
+
+<!-- reCAPTCHA v3 -->
+<script src="https://www.google.com/recaptcha/api.js?render=6Lcsf8csAAAAAObrutJZjr9ogA646qxEh6Fle0Th"></script>
+
+<!-- AJAX form submission (replaces traditional POST redirect) -->
+<script src="/assets/js/contact-form-ajax.js"></script>
+
 </body>
 </html>

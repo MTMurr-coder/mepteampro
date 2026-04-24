@@ -2228,7 +2228,9 @@ body.dark .project-country-tab.active {
    /* display: block;*/
    display:none;
 }
-
+.project-country-tab {
+    display: none;
+}
 .projects-mobile-filter-item {
     width: 100%;
     text-align: left;
@@ -4778,4 +4780,194 @@ html[dir="rtl"] .about-advantages-premium li::before {
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.75);
     margin: 0;
+}
+/* ===== CENTER MAP HEADER + RESTORE ORANGE UNDERLINES ===== */
+
+/* keep section titles centered in all languages */
+.section-title,
+.section h2,
+.section-placeholder h2,
+.services-header,
+.projects-heading,
+.about-header,
+.contact-header,
+.map-showcase-header {
+    text-align: center !important;
+}
+
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .section h2,
+html[dir="rtl"] .section-placeholder h2,
+html[dir="rtl"] .services-header,
+html[dir="rtl"] .projects-heading,
+html[dir="rtl"] .about-header,
+html[dir="rtl"] .contact-header,
+html[dir="rtl"] .map-showcase-header {
+    text-align: center !important;
+}
+
+/* force the kicker in the map section to stay centered */
+.map-showcase-header .section-kicker {
+    display: inline-flex !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* restore orange underline under service and projects titles */
+.services-section .section-title::after,
+.portfolio-section .section-title::after,
+.map-showcase .section-title::after {
+    display: block !important;
+    content: "" !important;
+    width: 64px !important;
+    height: 3px !important;
+    border-radius: 999px !important;
+    background: var(--primary) !important;
+    margin: 12px auto 0 !important;
+}
+
+/* =========================
+   CONTACT RTL RESCUE
+   Add at the VERY END of style.css
+========================= */
+
+/* keep title centered */
+html[dir="rtl"] .contact-header,
+html[dir="rtl"] .contact-header .section-title,
+html[dir="rtl"] .contact-header .section-lead,
+html[dir="rtl"] .contact-info,
+html[dir="rtl"] .contact-info .section-title,
+html[dir="rtl"] .contact-info .section-lead {
+    text-align: center !important;
+}
+
+/* keep main grid structure normal */
+html[dir="rtl"] .contact-grid {
+    direction: rtl;
+}
+
+/* info cards: icon on the right, text aligned right */
+html[dir="rtl"] .contact-info-card {
+    direction: rtl;
+    grid-template-columns: 1fr 44px !important;
+    text-align: right !important;
+}
+
+html[dir="rtl"] .contact-info-icon {
+    order: 2;
+}
+
+html[dir="rtl"] .contact-info-card > div:last-child {
+    order: 1;
+}
+
+html[dir="rtl"] .contact-info-card h3,
+html[dir="rtl"] .contact-info-card p,
+html[dir="rtl"] .contact-info-card a,
+html[dir="rtl"] .contact-office-item,
+html[dir="rtl"] .contact-office-item strong,
+html[dir="rtl"] .contact-office-address {
+    text-align: right !important;
+}
+
+/* office list spacing */
+html[dir="rtl"] .contact-office-list {
+    align-items: stretch;
+}
+
+/* form wrapper */
+html[dir="rtl"] .contact-form-wrap,
+html[dir="rtl"] .contact-form,
+html[dir="rtl"] .form-group {
+    direction: rtl;
+    text-align: right !important;
+}
+
+html[dir="rtl"] .form-group label {
+    text-align: right !important;
+}
+
+html[dir="rtl"] .form-group input,
+html[dir="rtl"] .form-group textarea {
+    direction: rtl;
+    text-align: right !important;
+}
+
+/* placeholders right in Arabic */
+html[dir="rtl"] .form-group input::placeholder,
+html[dir="rtl"] .form-group textarea::placeholder {
+    text-align: right;
+}
+
+/* submit button stays full width and centered */
+html[dir="rtl"] .contact-submit-btn,
+html[dir="rtl"] .contact-form .btn-primary {
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+/* alert boxes */
+html[dir="rtl"] .contact-alert {
+    text-align: right !important;
+}
+
+/* tablet/mobile */
+@media (max-width: 640px) {
+    html[dir="rtl"] .contact-info-card {
+        grid-template-columns: 1fr 40px !important;
+    }
+}
+/* =========================
+   PROJECTS MOBILE FILTER SPACING FIX
+========================= */
+
+.projects-mobile-filter {
+    position: relative;
+}
+
+.projects-mobile-filter-toggle {
+    margin-bottom: 0;
+}
+
+.projects-mobile-filter-menu {
+    top: calc(100% + 14px) !important; /* more space under button */
+    left: 0;
+    right: 0;
+    margin-top: 0 !important;
+    border-radius: 14px;
+    overflow: hidden;
+    z-index: 30;
+}
+
+/* when open, actually show it */
+.projects-mobile-filter-menu.open {
+    display: block !important;
+}
+
+/* cleaner item spacing */
+.projects-mobile-filter-item {
+    padding: 14px 16px;
+    line-height: 1.4;
+}
+
+/* RTL alignment */
+html[dir="rtl"] .projects-mobile-filter-menu {
+    text-align: right;
+}
+
+html[dir="rtl"] .projects-mobile-filter-item {
+    text-align: right;
+}
+
+/* small screens: add a little more breathing room */
+@media (max-width: 640px) {
+    .projects-mobile-filter {
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .projects-mobile-filter-menu {
+        top: calc(100% + 16px) !important;
+    }
 }
