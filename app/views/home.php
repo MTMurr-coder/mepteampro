@@ -491,56 +491,24 @@
 <?php endif; ?>
     </div>
 </section>
-<section class="map-showcase map-showcase-premium" id="presence">
+<section class="map-showcase section" id="locations">
     <div class="container">
-        <div class="map-showcase-header">
-            <span class="section-kicker">Global Footprint</span>
-            <h2 class="section-title">Our Presence</h2>
+        <div class="projects-heading">
+            <h2 class="section-title">
+                <?= e(site_text($pdo, 'map_title', $lang)) ?>
+            </h2>
+
             <p class="section-lead">
-                Discover our offices and selected project locations across the regions where we operate.
+                <?= e(site_text($pdo, 'map_intro', $lang)) ?>
             </p>
         </div>
 
-        <div class="presence-stats">
-            <div class="presence-stat">
-                <strong>2</strong>
-                <span>Office Locations</span>
-            </div>
-            <div class="presence-stat">
-                <strong>8+</strong>
-                <span>Countries Reached</span>
-            </div>
-            <div class="presence-stat">
-                <strong>MEP</strong>
-                <span>Design & Coordination</span>
-            </div>
-        </div>
-
-        <div class="presence-legend">
-            <span class="presence-legend-item">
-                <span class="presence-dot presence-dot-office"></span>
-                Offices
-            </span>
-            <span class="presence-legend-item">
-                <span class="presence-dot presence-dot-project"></span>
-                Projects
-            </span>
-        </div>
-
-        <div class="map-card map-card-premium">
-            <div class="map-card-top">
-                <div>
-                    <h3>Offices & Project Locations</h3>
-                    <p>Selected locations across residential, industrial, healthcare, and technically demanding sectors.</p>
-                </div>
-            </div>
-
-            <div class="map-frame">
-                <div id="projects-map"></div>
-            </div>
+        <div class="map-card">
+            <div id="projects-map"></div>
         </div>
     </div>
 </section>
+
 <section class="contact-section section" id="contact">
     <div class="container">
 
@@ -550,7 +518,10 @@
             </h2>
 
             <p class="section-lead contact-lead">
-                <?= e(site_text($pdo, 'contact_intro', $lang)) ?>
+                <?= e(site_text($pdo, 'contact_intro', $lang)
+                    ?: ($lang === 'fr' ? 'Prêt à discuter de vos besoins en ingénierie MEP ? Contactez-nous — nous répondons dans les 24 heures.'
+                        : ($lang === 'ar' ? 'هل أنت مستعد لمناقشة احتياجاتك في هندسة MEP؟ تواصل معنا — سنرد خلال 24 ساعة.'
+                            : 'Ready to discuss your MEP engineering needs? Get in touch — we respond within 24 hours.'))) ?>
             </p>
         </div>
 
@@ -637,7 +608,8 @@
                     </div>
                 <?php endif; ?>
 
-                <form class="contact-form" action="/contact-submit.php" method="POST">
+                <form class="contact-form" action="/contact-submit.php" method="POST" novalidate>
+                    <input type="hidden" name="recaptcha_token" id="recaptcha_token" value="">
                     <input type="hidden" name="lang" value="<?= e($lang) ?>">
                     <input type="hidden" name="csrf_token" value="<?= e($csrfToken) ?>">
                     <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
@@ -651,6 +623,7 @@
                             placeholder="<?= e(site_text($pdo, 'contact_name_placeholder', $lang)) ?>"
                             required
                         >
+                        <div class="form-error"></div>
                     </div>
 
                     <div class="form-group">
@@ -662,6 +635,7 @@
                             placeholder="<?= e(site_text($pdo, 'contact_email_placeholder', $lang)) ?>"
                             required
                         >
+                        <div class="form-error"></div>
                     </div>
 
                     <div class="form-group">
@@ -669,10 +643,11 @@
                         <textarea
                             id="contact_message"
                             name="message"
-                            rows="6"
+                            rows="5"
                             placeholder="<?= e(site_text($pdo, 'contact_message_placeholder', $lang)) ?>"
                             required
                         ></textarea>
+                        <div class="form-error"></div>
                     </div>
 
                     <button type="submit" class="btn-primary contact-submit-btn">

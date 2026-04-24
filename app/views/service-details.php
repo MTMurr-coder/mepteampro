@@ -149,21 +149,30 @@ require_once __DIR__ . '/partials/header.php';
                     </div>
 
                     <aside class="service-detail-sidebar">
-                        <div class="service-side-card">
-                            <h3><?= e(site_text($pdo, 'services_title', $lang)) ?></h3>
-                            <ul class="service-side-links">
-                                <?php foreach ($serviceMap as $sideSlug => $sideService): ?>
-                                    <li>
-                                        <a
-                                            href="?page=service-details&slug=<?= urlencode($sideSlug) ?>&lang=<?= urlencode($lang) ?>"
-                                            <?= $sideSlug === $slug ? 'class="active" aria-current="page"' : '' ?>
-                                        >
-                                            <?= e(site_text($pdo, $sideService['title_key'], $lang)) ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
+<div class="service-side-card">
+    <h3><?= e(site_text($pdo, 'services_title', $lang)) ?></h3>
+    <ul class="service-side-links">
+        <?php foreach ($serviceMap as $sideSlug => $sideService): ?>
+            <?php
+                $sideTitleKey = is_array($sideService) && isset($sideService['title_key'])
+                    ? $sideService['title_key']
+                    : null;
+
+                if (!$sideTitleKey) {
+                    continue;
+                }
+            ?>
+            <li>
+                <a
+                    href="?page=service-details&slug=<?= urlencode($sideSlug) ?>&lang=<?= urlencode($lang) ?>"
+                    <?= $sideSlug === $slug ? 'class="active" aria-current="page"' : '' ?>
+                >
+                    <?= e(site_text($pdo, $sideTitleKey, $lang)) ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
 
                         <div class="service-side-card service-side-cta">
                             <h3><?= e(site_text($pdo, 'contact_title', $lang)) ?></h3>
